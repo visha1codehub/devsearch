@@ -14,8 +14,12 @@ img {
   width: 100%;
 }
 
-.tag > i.im {
-  font-size: 1.5rem;
+/* i {
+  font-size: x-large;
+} */
+
+i.bi {
+  font-size: 2.5rem;
   margin-right: 0.5rem;
 }
 
