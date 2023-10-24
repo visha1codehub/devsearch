@@ -3,7 +3,7 @@ import uuid
 from users.models import Profile
 # Create your models here.
 class Project(models.Model):
-    owner = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True)
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     featured_image = models.ImageField(null=True, blank=True, default='default.jpg')
@@ -13,7 +13,15 @@ class Project(models.Model):
     vote_total = models.IntegerField(default=0, null=True, blank=True)
     vote_ratio = models.IntegerField(default=0, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
+    
+    @property
+    def imageURL(self):
+        try:
+            url = self.featured_image.url
+        except:
+            url = ''
+        return url
     
     def __str__(self) -> str:
         return self.title
@@ -46,7 +54,7 @@ class Review(models.Model):
     value = models.CharField(max_length=200, choices=VOTE_TYPE)
     body = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
     class Meta:
         unique_together = [['owner', 'project']]
@@ -59,8 +67,8 @@ class Review(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
-    id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False)
     
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
     
